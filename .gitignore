@@ -54,4 +54,6 @@ app.*.map.json
 /test
 /web
 /windows
-
+/.env
+g/
+schema.graphql
