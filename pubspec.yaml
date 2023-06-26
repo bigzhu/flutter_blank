@@ -30,6 +30,9 @@ environment:
 dependencies:
   ferry: any
   gql_http_link: any
+  hive: any
+  ferry_hive_store: any
+  hive_flutter: any
   flutter:
     sdk: flutter
 
