@@ -28,6 +28,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  # riverpod 
+  flutter_hooks: any
+  hooks_riverpod: any
+  # ferry
   ferry: any
   gql_http_link: any
   hive: any
@@ -42,6 +46,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  # ferry
   ferry_generator: any
   build_runner: any
   flutter_test:
