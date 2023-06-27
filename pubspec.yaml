@@ -28,7 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  logger: any
+  # nhost
+  nhost_dart: ^1.0.0
   # riverpod 
   flutter_hooks: any
   hooks_riverpod: any
@@ -40,7 +41,7 @@ dependencies:
   hive_flutter: any
   flutter:
     sdk: flutter
-
+  logger: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
