@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger/logger.dart';
 
-void main() {
+import 'state.dart';
+
+void main() async {
+  final container = ProviderContainer();
+  final logger = container.read(loggerP);
+  logger.d(container.read(ferryClientP));
+  logger.d(container.read(nhostClientP));
   runApp(
     // For widgets to be able to read providers, we need to wrap the entire
     // application in a "ProviderScope" widget.
     // This is where the state of our providers will be stored.
-    const ProviderScope(
-      child: MyApp(),
+    UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
     ),
   );
 }
