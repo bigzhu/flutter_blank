@@ -28,6 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  http: any
+  app_links: any
+  font_awesome_flutter: any
+  url_launcher: any
+  flutter_easyloading: any
   # nhost
   nhost_dart: ^1.0.0
   # riverpod 

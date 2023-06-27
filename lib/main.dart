@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
+import 'package:app_links/app_links.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:http/http.dart' as http;
+import 'package:nhost_dart/nhost_dart.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'components/Auth/index.dart';
 import 'state.dart';
+import 'const.dart';
+
+void init(ProviderContainer container) {}
 
 void main() async {
+  // some init --------------------------------------------
   final container = ProviderContainer();
   final logger = container.read(loggerP);
-  logger.d(container.read(ferryClientP));
-  logger.d(container.read(nhostClientP));
+  logger.d('init start');
+  // use this trigger iOS net promission
+  http.get(Uri.parse(
+      'https://entube-uzv2eu4hta-de.a.run.app/?what=info&uri=https://www.youtube.com/watch?v=QmOF0crdyRU'));
+  // set EasyLoading style
+  EasyLoading.instance
+    ..boxShadow =
+        <BoxShadow>[] //see https://github.com/nslogx/flutter_easyloading/issues/135
+    ..loadingStyle = EasyLoadingStyle.custom
+    ..textColor = Colors.white
+    ..indicatorColor = Colors.white
+    ..backgroundColor = Colors.black.withOpacity(0.3);
+
+  // init client
+  container.read(nhostClientP);
+  container.read(ferryClientP);
+  logger.d('init done');
+  // end init -----------------------------------------------
   runApp(
     // For widgets to be able to read providers, we need to wrap the entire
     // application in a "ProviderScope" widget.
@@ -20,13 +46,40 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    AppLinks appLinks = AppLinks();
+    useEffect(
+      () {
+        //register the app link handler
+        final linkSubscription = appLinks.uriLinkStream.listen((uri) {
+          if (uri.host == signInSuccessHost) {
+            ref.read(authSNP.notifier).completeOAuth(uri);
+          }
+          closeInAppWebView();
+        });
+
+        return () {
+          linkSubscription.cancel();
+        };
+      },
+      [],
+    );
+    final logger = ref.read(loggerP);
+    final authenticationState = ref.watch(authSNP);
+    switch (authenticationState) {
+      case AuthenticationState.inProgress:
+        logger.d('AuthenticationState.inProgress');
+      case AuthenticationState.signedOut:
+        logger.d('AuthenticationState.signedOut');
+      default:
+        logger.d(authenticationState);
+    }
     return MaterialApp(
+      builder: EasyLoading.init(),
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

@@ -43,3 +43,5 @@ final loggerP = Provider<Logger>((ref) => Logger(
           printTime: true // Should each log print contain a timestamp
           ),
     ));
+
+final easyloadingP = Provider((ref) => null);
