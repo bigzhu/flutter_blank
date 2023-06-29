@@ -11,9 +11,7 @@ import 'components/Auth/index.dart';
 import 'state.dart';
 import 'const.dart';
 
-void init(ProviderContainer container) {}
-
-void main() async {
+ProviderContainer init() {
   // some init --------------------------------------------
   final container = ProviderContainer();
   final logger = container.read(loggerP);
@@ -35,6 +33,11 @@ void main() async {
   container.read(ferryClientP);
   logger.d('init done');
   // end init -----------------------------------------------
+  return container;
+}
+
+void main() async {
+  final container = init();
   runApp(
     // For widgets to be able to read providers, we need to wrap the entire
     // application in a "ProviderScope" widget.
