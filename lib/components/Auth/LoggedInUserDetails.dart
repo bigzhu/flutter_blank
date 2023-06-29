@@ -22,10 +22,10 @@ class LoggedInUserDetails extends HookConsumerWidget {
         children: [
           Text(
             'Welcome ${currentUser.email}!',
-            style: textTheme.headline5,
+            style: textTheme.headlineSmall,
           ),
           rowSpacing,
-          Text('User details:', style: textTheme.caption),
+          Text('User details:', style: textTheme.bodySmall),
           rowSpacing,
           Table(
             defaultColumnWidth: const IntrinsicColumnWidth(),
