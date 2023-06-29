@@ -46,7 +46,17 @@ app.*.map.json
 # change
 /.metadata
 /analysis_options.yaml
-/android
+
+# if want not ignore one file is very hard
+/android/*
+!/android/app
+/android/app/*
+!/android/app/src
+/android/app/src/*
+!/android/app/src/main
+/android/app/src/main/*
+!android/app/src/main/AndroidManifest.xml
+
 /ios
 /linux
 /macos
