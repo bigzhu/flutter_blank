@@ -13,7 +13,7 @@ import 'components/Auth/index.dart';
 import 'state.dart';
 import 'const.dart';
 
-ProviderContainer init() {
+Future<ProviderContainer> init() async {
   // some init --------------------------------------------
   final container = ProviderContainer();
   final logger = container.read(loggerP);
@@ -31,15 +31,15 @@ ProviderContainer init() {
     ..backgroundColor = Colors.black.withOpacity(0.3);
 
   // init client
-  container.read(nhostClientP);
-  container.read(ferryClientP);
+  await container.read(nhostClientP);
+  await container.read(ferryClientP);
   logger.d('init done');
   // end init -----------------------------------------------
   return container;
 }
 
 void main() async {
-  final container = init();
+  final container = await init();
   runApp(
     // For widgets to be able to read providers, we need to wrap the entire
     // application in a "ProviderScope" widget.
@@ -56,12 +56,14 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final logger = ref.read(loggerP);
     AppLinks appLinks = AppLinks();
     useEffect(
       () {
         //register the app link handler
         final linkSubscription = appLinks.uriLinkStream.listen((uri) {
           if (uri.host == signInSuccessHost) {
+            logger.d(uri.host);
             ref.read(authSNP.notifier).completeOAuth(uri);
           }
           closeInAppWebView();
@@ -73,16 +75,7 @@ class MyApp extends HookConsumerWidget {
       },
       [],
     );
-    final logger = ref.read(loggerP);
     final authenticationState = ref.watch(authSNP);
-    switch (authenticationState) {
-      case AuthenticationState.inProgress:
-        logger.d('AuthenticationState.inProgress');
-      case AuthenticationState.signedOut:
-        logger.d('AuthenticationState.signedOut');
-      default:
-        logger.d(authenticationState);
-    }
     return MaterialApp.router(
         builder: EasyLoading.init(),
         title: 'Flutter Demo',
@@ -109,12 +102,16 @@ class MyApp extends HookConsumerWidget {
             routes: routes,
             redirect: (BuildContext context, GoRouterState state) {
               switch (authenticationState) {
-                //case AuthenticationState.signedIn:
+                case AuthenticationState.signedIn:
+                  final auth = ref.watch(nhostClientSP)?.auth;
+                  logger.d(auth?.accessToken);
+                  return state.path;
                 //return '/AcquiringWords';
                 //  return '/ArticleItems';
                 //return '/LoggedInUserDetails';
                 case AuthenticationState.inProgress:
-                  return '/AuthLoading';
+                  EasyLoading.showInfo('login in progress');
+                  return state.path;
                 case AuthenticationState.signedOut:
                   return '/SignIn';
                 default:

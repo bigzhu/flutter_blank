@@ -8,7 +8,8 @@ import 'package:nhost_dart/nhost_dart.dart';
 import './config.dart';
 
 final ferryClientP = Provider<Future<Client>>((ref) async {
-  final nhost = ref.watch(nhostClientP);
+  final nhost = await ref.watch(nhostClientP);
+  ref.read(nhostClientSP.notifier).state = nhost;
 
   await Hive.initFlutter();
   final box = await Hive.openBox("graphql");
@@ -25,12 +26,20 @@ final ferryClientP = Provider<Future<Client>>((ref) async {
   return client;
 });
 
-final nhostClientP = Provider<NhostClient>((ref) => NhostClient(
-      subdomain: Subdomain(
-        region: region,
-        subdomain: subdomain,
-      ),
-    ));
+final nhostClientP = Provider<Future<NhostClient>>((ref) async {
+  await Hive.initFlutter();
+  final box = await Hive.openBox("auth");
+  return NhostClient(
+    authStore: HiveAuthStore(box),
+    subdomain: Subdomain(
+      region: region,
+      subdomain: subdomain,
+    ),
+  );
+});
+
+// 初始化完成后存放 nhost 实体
+final nhostClientSP = StateProvider<NhostClient?>((ref) => null);
 
 final loggerP = Provider<Logger>((ref) => Logger(
       printer: PrettyPrinter(
@@ -44,4 +53,22 @@ final loggerP = Provider<Logger>((ref) => Logger(
           ),
     ));
 
-final easyloadingP = Provider((ref) => null);
+// 需要自己实现 AuthStore 的方法, 太坑了 nhost
+class HiveAuthStore implements AuthStore {
+  HiveAuthStore(this.authBox);
+  late Box authBox;
+  @override
+  String? getString(String key) {
+    return authBox.get(key);
+  }
+
+  @override
+  Future<void> setString(String key, String value) async {
+    await authBox.put(key, value);
+  }
+
+  @override
+  Future<void> removeItem(String key) async {
+    await authBox.delete(key);
+  }
+}

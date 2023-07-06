@@ -10,7 +10,7 @@ class LoggedInUserDetails extends HookConsumerWidget {
   const LoggedInUserDetails({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(nhostClientP).auth;
+    final auth = ref.watch(nhostClientSP)!.auth;
 
     final textTheme = Theme.of(context).textTheme;
     const cellPadding = EdgeInsets.all(4);

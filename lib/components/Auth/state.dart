@@ -10,7 +10,7 @@ class AuthStateNotifier extends StateNotifier<AuthenticationState> {
   late NhostAuthClient auth;
   late Logger logger;
   AuthStateNotifier(this.ref) : super(AuthenticationState.inProgress) {
-    auth = ref.watch(nhostClientP).auth;
+    auth = ref.watch(nhostClientSP)!.auth;
     logger = ref.watch(loggerP);
     autoSignIn();
   }
@@ -31,14 +31,14 @@ class AuthStateNotifier extends StateNotifier<AuthenticationState> {
     await auth.completeOAuthProviderSignIn(uri);
     state = auth.authenticationState;
     // use close to save the token
-    ref.watch(nhostClientP).close();
+    ref.watch(nhostClientSP)!.close();
   }
 
   Future<void> logout() async {
     state = AuthenticationState.inProgress;
     await auth.signOut();
     state = auth.authenticationState;
-    ref.watch(nhostClientP).close();
+    ref.watch(nhostClientSP)!.close();
   }
 }
 
