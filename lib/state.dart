@@ -7,12 +7,14 @@ import './g/schema.schema.gql.dart' show possibleTypesMap;
 import 'package:nhost_dart/nhost_dart.dart';
 import './config.dart';
 
-final ferryClientP = Provider<Future<Client>>((ref) async {
-  final nhost = await ref.watch(nhostClientP);
-  ref.read(nhostClientSP.notifier).state = nhost;
+// 存放打开的 box, APP 初始化时候赋值
+final authBoxSP = StateProvider<Box?>((ref) => null);
+final graphqlBoxSP = StateProvider<Box?>((ref) => null);
 
-  await Hive.initFlutter();
-  final box = await Hive.openBox("graphql");
+final ferryClientP = Provider<Client>((ref) {
+  final nhost = ref.watch(nhostClientP);
+
+  final box = ref.watch(graphqlBoxSP)!;
   final store = HiveStore(box);
   final cache = Cache(store: store, possibleTypes: possibleTypesMap);
 
@@ -26,9 +28,8 @@ final ferryClientP = Provider<Future<Client>>((ref) async {
   return client;
 });
 
-final nhostClientP = Provider<Future<NhostClient>>((ref) async {
-  await Hive.initFlutter();
-  final box = await Hive.openBox("auth");
+final nhostClientP = Provider<NhostClient>((ref) {
+  final box = ref.watch(authBoxSP)!;
   return NhostClient(
     authStore: HiveAuthStore(box),
     subdomain: Subdomain(
@@ -37,9 +38,6 @@ final nhostClientP = Provider<Future<NhostClient>>((ref) async {
     ),
   );
 });
-
-// 初始化完成后存放 nhost 实体
-final nhostClientSP = StateProvider<NhostClient?>((ref) => null);
 
 final loggerP = Provider<Logger>((ref) => Logger(
       printer: PrettyPrinter(

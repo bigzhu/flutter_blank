@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,7 +16,14 @@ import 'const.dart';
 
 Future<ProviderContainer> init() async {
   // some init --------------------------------------------
+
+  await Hive.initFlutter();
+  final graphql = await Hive.openBox("graphql");
+  final auth = await Hive.openBox("auth");
+
   final container = ProviderContainer();
+  container.read(authBoxSP.notifier).state = auth;
+  container.read(graphqlBoxSP.notifier).state = graphql;
   final logger = container.read(loggerP);
   logger.d('init start');
   // use this trigger iOS net promission
@@ -31,8 +39,8 @@ Future<ProviderContainer> init() async {
     ..backgroundColor = Colors.black.withOpacity(0.3);
 
   // init client
-  await container.read(nhostClientP);
-  await container.read(ferryClientP);
+  container.read(nhostClientP);
+  container.read(ferryClientP);
   logger.d('init done');
   // end init -----------------------------------------------
   return container;
@@ -103,8 +111,8 @@ class MyApp extends HookConsumerWidget {
             redirect: (BuildContext context, GoRouterState state) {
               switch (authenticationState) {
                 case AuthenticationState.signedIn:
-                  final auth = ref.watch(nhostClientSP)?.auth;
-                  logger.d(auth?.accessToken);
+                  final auth = ref.watch(nhostClientP).auth;
+                  logger.d(auth.accessToken);
                   return state.path;
                 //return '/AcquiringWords';
                 //  return '/ArticleItems';
