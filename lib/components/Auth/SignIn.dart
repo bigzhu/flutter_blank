@@ -6,24 +6,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../config.dart';
+import '../../state.dart';
 import './state.dart';
 
 class SignIn extends HookConsumerWidget {
   const SignIn({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nhostGithubSignInUrl = getAuthURL('github');
-    final nhostGoogleSignInUrl = getAuthURL('google');
     final authenticationState = ref.watch(authSNP);
     if (authenticationState == AuthenticationState.inProgress) {
       EasyLoading.show(status: "Login in progress ...");
       return Container();
     }
     EasyLoading.dismiss();
+
+    final logger = ref.read(loggerP);
+    logger.d(getAuthURL('github'));
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       ElevatedButton.icon(
         onPressed: () async {
-          await launchUrl(Uri.parse(nhostGithubSignInUrl),
+          await launchUrl(Uri.parse(getAuthURL('github')),
               mode: LaunchMode.externalApplication);
         },
         icon: const Icon(FontAwesomeIcons.github),
@@ -32,7 +34,7 @@ class SignIn extends HookConsumerWidget {
       const SizedBox(height: 40),
       ElevatedButton.icon(
         onPressed: () async {
-          await launchUrl(Uri.parse(nhostGoogleSignInUrl),
+          await launchUrl(Uri.parse(getAuthURL('google')),
               mode: LaunchMode.externalApplication);
         },
         icon: const Icon(FontAwesomeIcons.google),
@@ -41,3 +43,5 @@ class SignIn extends HookConsumerWidget {
     ]);
   }
 }
+
+//
