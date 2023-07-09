@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../components/Auth/index.dart';
-import '../main.dart' show MyHomePage;
+import 'components/auth/index.dart';
+import 'main.dart' show MyHomePage;
 
 final routes = [
   GoRoute(

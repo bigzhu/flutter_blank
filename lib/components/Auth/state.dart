@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nhost_dart/nhost_dart.dart';
 import 'package:logger/logger.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 
 import '../../state.dart';
 import '../../utils/index.dart';

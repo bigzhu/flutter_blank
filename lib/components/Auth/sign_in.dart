@@ -1,13 +1,13 @@
-import 'package:nhost_dart/nhost_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nhost_dart/nhost_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../config.dart';
 import '../../state.dart';
-import './state.dart';
+import 'state.dart';
 
 class SignIn extends HookConsumerWidget {
   const SignIn({super.key});

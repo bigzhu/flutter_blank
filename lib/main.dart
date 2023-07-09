@@ -7,13 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nhost_dart/nhost_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'components/Auth/index.dart';
+import 'components/auth/index.dart';
 import 'const.dart';
 import 'init.dart';
 import 'routes.dart';
 import 'state.dart';
-
-
 
 void main() async {
   final container = await init();

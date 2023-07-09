@@ -3,9 +3,9 @@ import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
-import './g/schema.schema.gql.dart' show possibleTypesMap;
+import 'g/schema.schema.gql.dart' show possibleTypesMap;
 import 'package:nhost_dart/nhost_dart.dart';
-import './config.dart';
+import 'config.dart';
 
 // 存放打开的 box, APP 初始化时候赋值
 final authBoxSP = StateProvider<Box?>((ref) => null);
