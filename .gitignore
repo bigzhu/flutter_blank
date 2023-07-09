@@ -57,9 +57,15 @@ app.*.map.json
 /android/app/src/main/*
 !android/app/src/main/AndroidManifest.xml
 
+
+# add Info.plist
+/macos/*
+!/macos/Runner
+/macos/Runner/*
+!/macos/Runner/Info.plist
+
 /ios
 /linux
-/macos
 /pubspec.lock
 /test
 /web
