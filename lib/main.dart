@@ -1,50 +1,19 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'routes.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:app_links/app_links.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:http/http.dart' as http;
 import 'package:nhost_dart/nhost_dart.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'components/Auth/index.dart';
-import 'state.dart';
 import 'const.dart';
+import 'init.dart';
+import 'routes.dart';
+import 'state.dart';
 
-Future<ProviderContainer> init() async {
-  // some init --------------------------------------------
 
-  await Hive.initFlutter();
-  final graphql = await Hive.openBox("graphql");
-  final auth = await Hive.openBox("auth");
-
-  final container = ProviderContainer();
-  container.read(authBoxSP.notifier).state = auth;
-  container.read(graphqlBoxSP.notifier).state = graphql;
-  final logger = container.read(loggerP);
-  logger.d('init start');
-  // use this trigger iOS net promission
-  http.get(Uri.parse(
-      'https://entube-uzv2eu4hta-de.a.run.app/?what=info&uri=https://www.youtube.com/watch?v=QmOF0crdyRU'));
-  // set EasyLoading style
-  EasyLoading.instance
-    ..boxShadow =
-        <BoxShadow>[] //see https://github.com/nslogx/flutter_easyloading/issues/135
-    ..loadingStyle = EasyLoadingStyle.custom
-    ..textColor = Colors.white
-    ..indicatorColor = Colors.white
-    ..backgroundColor = Colors.black.withOpacity(0.3);
-
-  // init client
-  container.read(nhostClientP);
-  container.read(ferryClientP);
-  logger.d('init done');
-  // end init -----------------------------------------------
-  return container;
-}
 
 void main() async {
   final container = await init();
