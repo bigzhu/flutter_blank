@@ -63,6 +63,7 @@ app.*.map.json
 !/macos/Runner
 /macos/Runner/*
 !/macos/Runner/Info.plist
+!/macos/Runner/DebugProfile.entitlements
 
 /ios
 /linux

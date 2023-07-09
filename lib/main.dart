@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -37,11 +39,17 @@ class MyApp extends HookConsumerWidget {
       () {
         //register the app link handler
         final linkSubscription = appLinks.uriLinkStream.listen((uri) {
+          logger.d(uri.host);
           if (uri.host == signInSuccessHost) {
-            logger.d(uri.host);
             ref.read(authSNP.notifier).completeOAuth(uri);
           }
-          closeInAppWebView();
+          if (uri.host == signInFailureHost) {
+            EasyLoading.showError('login in failure');
+          }
+          // not run in mac
+          if (Platform.isAndroid) {
+            closeInAppWebView();
+          }
         });
 
         return () {
