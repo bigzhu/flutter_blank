@@ -73,6 +73,7 @@ app.*.map.json
 !/ios/Share Extension
 /ios/Share Extension/*
 !/ios/Share Extension/Info.plist
+!/ios/Share Extension/ShareViewController.swift
 
 /linux
 /pubspec.lock
