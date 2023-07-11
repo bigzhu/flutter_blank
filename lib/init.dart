@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,7 +16,7 @@ Future<ProviderContainer> init() async {
   container.read(graphqlBoxSP.notifier).state = graphql;
   final auth = await Hive.openBox("auth");
   container.read(authBoxSP.notifier).state = auth;
-  //final logger = container.read(loggerP);
+  final logger = container.read(loggerP);
   // use this trigger iOS net permission
   http.get(Uri.parse(
       'https://entube-uzv2eu4hta-de.a.run.app/?what=info&uri=https://www.youtube.com/watch?v=QmOF0crdyRU'));
@@ -30,5 +32,7 @@ Future<ProviderContainer> init() async {
   // init client
   container.read(nhostClientP);
   container.read(ferryClientP);
+
+  logger.d('init done');
   return container;
 }

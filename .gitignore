@@ -65,7 +65,12 @@ app.*.map.json
 !/macos/Runner/Info.plist
 !/macos/Runner/DebugProfile.entitlements
 
-/ios
+
+/ios/*
+!/ios/Runner
+/ios/Runner/*
+!/ios/Runner/Info.plist
+
 /linux
 /pubspec.lock
 /test

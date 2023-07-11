@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:app_links/app_links.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nhost_dart/nhost_dart.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'components/auth/index.dart';
@@ -39,7 +41,7 @@ class MyApp extends HookConsumerWidget {
       () {
         //register the app link handler
         final linkSubscription = appLinks.uriLinkStream.listen((uri) {
-          logger.d(uri.host);
+          //logger.d(uri.host);
           if (uri.host == signInSuccessHost) {
             ref.read(authSNP.notifier).completeOAuth(uri);
           }
@@ -52,8 +54,27 @@ class MyApp extends HookConsumerWidget {
           }
         });
 
+        // For sharing or opening urls/text coming from outside the app while the app is in the memory
+        StreamSubscription intentDataStreamSubscription =
+            ReceiveSharingIntent.getTextStream().listen((String url) {
+          //if (ref.watch(authSNP) != AuthenticationState.signedIn) return;
+          //ref.read(userArticlesSNP.notifier).sharedNew(url);
+          logger.d(url);
+        }, onError: (err) {
+          EasyLoading.showError("getLinkStream error: $err");
+        });
+
+        // For sharing or opening urls/text coming from outside the app while the app is closed
+        ReceiveSharingIntent.getInitialText().then((String? url) {
+          logger.d(url);
+          if (url != null) {
+            //ref.read(userArticlesSNP.notifier).sharedNew(url);
+          }
+        });
+
         return () {
           linkSubscription.cancel();
+          intentDataStreamSubscription.cancel();
         };
       },
       [],
