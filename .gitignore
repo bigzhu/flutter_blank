@@ -67,6 +67,7 @@ app.*.map.json
 
 
 /ios/*
+!/ios/Podfile
 !/ios/Runner
 /ios/Runner/*
 !/ios/Runner/Info.plist

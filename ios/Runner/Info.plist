@@ -16,7 +16,7 @@
 			</dict>
 			<dict>
 				<key>CFBundleURLName</key>
-				<string>app.entube</string>
+				<string>com.example.flutterBlank</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>entube</string>

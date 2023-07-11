@@ -43,6 +43,7 @@ class MyApp extends HookConsumerWidget {
         final linkSubscription = appLinks.uriLinkStream.listen((uri) {
           //logger.d(uri.host);
           logger.d(uri);
+          logger.d(uri.host);
           if (uri.host == signInSuccessHost) {
             ref.read(authSNP.notifier).completeOAuth(uri);
           }
@@ -56,6 +57,7 @@ class MyApp extends HookConsumerWidget {
         });
 
         // For sharing or opening urls/text coming from outside the app while the app is in the memory
+        logger.d("run intentDataStreamSubscription");
         StreamSubscription intentDataStreamSubscription =
             ReceiveSharingIntent.getTextStream().listen((String url) {
           //if (ref.watch(authSNP) != AuthenticationState.signedIn) return;
