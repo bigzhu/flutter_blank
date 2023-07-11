@@ -42,6 +42,7 @@ class MyApp extends HookConsumerWidget {
         //register the app link handler
         final linkSubscription = appLinks.uriLinkStream.listen((uri) {
           //logger.d(uri.host);
+          logger.d(uri);
           if (uri.host == signInSuccessHost) {
             ref.read(authSNP.notifier).completeOAuth(uri);
           }
