@@ -75,6 +75,9 @@ app.*.map.json
 /ios/Share Extension/*
 !/ios/Share Extension/Info.plist
 !/ios/Share Extension/ShareViewController.swift
+!/ios/Runner.xcodeproj
+/ios/Runner.xcodeproj/*
+!/ios/Runner.xcodeproj/project.pbxproj
 
 /linux
 /pubspec.lock
