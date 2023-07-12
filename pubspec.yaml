@@ -37,7 +37,6 @@ dependencies:
   # nhost
   nhost_dart: ^1.0.0-dev.12
   # riverpod
-  flutter_hooks: any
   hooks_riverpod: any
   # ferry
   ferry: any
@@ -110,3 +109,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
