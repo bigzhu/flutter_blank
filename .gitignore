@@ -78,6 +78,8 @@ app.*.map.json
 !/ios/Share Extension/Info.plist
 !/ios/Share Extension/ShareViewController.swift
 !/ios/Share Extension/Share Extension.entitlements
+!/ios/Share Extension/Base.lproj
+
 !/ios/Runner.xcodeproj
 /ios/Runner.xcodeproj/*
 !/ios/Runner.xcodeproj/project.pbxproj
