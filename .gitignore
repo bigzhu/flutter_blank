@@ -71,10 +71,13 @@ app.*.map.json
 !/ios/Runner
 /ios/Runner/*
 !/ios/Runner/Info.plist
+!/ios/Runner/Runner.entitlements
+
 !/ios/Share Extension
 /ios/Share Extension/*
 !/ios/Share Extension/Info.plist
 !/ios/Share Extension/ShareViewController.swift
+!/ios/Share Extension/Share Extension.entitlements
 !/ios/Runner.xcodeproj
 /ios/Runner.xcodeproj/*
 !/ios/Runner.xcodeproj/project.pbxproj
